@@ -1,13 +1,12 @@
 <?php
 
-    require '../../includes/funciones.php'; //sirve para funciones 
-    $auth = estaAutenticado();
+    require '../../includes/app.php'; 
 
-    if(!$auth) {
-        header('Location: /');
-    }
-    //BASE DE DATOS
-    require '../../includes/config/database.php';
+    use App\Propiedad;
+
+    estaAutenticado();
+
+    
     $db = conectarDB();
     
     //CONSULTAR PARA OBTENER LOS VENDEDORES
