@@ -1,7 +1,5 @@
 <?php
 //IMPORTAR LA CONEXION
-require 'includes/config/database.php';//la ruta es relativa desde el index.php parte desde ahi
-// require __DIR__ . '/../config/database.php'; //con _DIR_ es relativo a este documento la ruta parte desde aqui ruta
 $db = conectarDB();
 
 //CONSULTAR

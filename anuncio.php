@@ -6,8 +6,8 @@
        header('Location: /');
    }
 
-   //IMPORTAR LA CONEXION
-    require 'includes/config/database.php';   
+   
+    require 'includes/app.php'; 
     $db = conectarDB();
 
     //CONSULTAR
@@ -22,7 +22,7 @@
 
     $propiedad = mysqli_fetch_assoc($resultado); 
 
-    require 'includes/funciones.php'; //sirve para funciones    
+      
     incluirTemplate('header'); 
 ?>
 

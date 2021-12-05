@@ -1,5 +1,5 @@
 <?php
-    require 'includes/funciones.php'; //sirve para funciones    
+    require 'includes/app.php'; 
     incluirTemplate('header', $inicio = true); 
 ?>
 

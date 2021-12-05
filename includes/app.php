@@ -1,6 +1,13 @@
  <?php
+ 
+//ARCHIVO PRINCIPAL: llama funciones, clases y bd
+ require 'funciones.php';
+ require 'config/database.php';
+ require __DIR__ . '/../vendor/autoload.php';
 
-define('TEMPLATES_URL', __DIR__ . '/templates'); //__DIR__ es una superglobal para 
-                                                  //que nos traiga ubicacion y sepa
-                                                  // donde buscar los archivos
-define('FUNCIONES_URL', __DIR__ . 'funciones.php');
+ use App\Propiedad;
+
+ $propiedad = new Propiedad;
+//  var_dump($propiedad);
+  
+
