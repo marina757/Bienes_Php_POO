@@ -1,7 +1,7 @@
 <?php
 
 function conectarDB() : mysqli {
-    $db = mysqli_connect('localhost', 'root', '', 'bienes_php');
+    $db = new mysqli('localhost', 'root', '', 'bienes_php');
 
 
     // if ($db) {

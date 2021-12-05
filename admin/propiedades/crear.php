@@ -38,6 +38,12 @@
 
     //EJECUTA CODIGO DESPUES DE QUE USUARIO ENVIA FORMULARIO
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $propiedad = new Propiedad($_POST);
+        
+        $propiedad->guardar();
+
+
         //  echo "<pre>";
         //  var_dump($_POST); //nos trae inf cuando mandamos peticion post en form
         //  echo "</pre>";
@@ -54,7 +60,7 @@
         $habitaciones = mysqli_real_escape_string( $db, $_POST['habitaciones']);
         $wc = mysqli_real_escape_string( $db, $_POST['wc']);
         $estacionamiento = mysqli_real_escape_string( $db, $_POST['estacionamiento']);
-        $vendedorId = mysqli_real_escape_string( $db, $_POST['vendedor']);
+        $vendedorId = mysqli_real_escape_string( $db, $_POST['vendedorId']);
         $creado = date('Y/m/d');
 
         //ASIGNAR FILES HACIA UNA VARIABLE
@@ -125,13 +131,6 @@
             move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen );
             // exit;
             
-            //INSERTAR EN BASE DE DATOS
-            $query = " INSERT INTO propiedades (titulo, precio, imagen, descripcion,
-            habitaciones, wc, estacionamiento, creado, vendedorId ) VALUES ( '$titulo',
-            '$precio', '$nombreImagen','$descripcion','$habitaciones','$wc','$estacionamiento', '$creado',
-            '$vendedorId' ) ";
-
-            // echo $query;
 
             $resultado = mysqli_query($db, $query);
 
@@ -193,7 +192,7 @@
             <fieldset>
                 <legend>Vendedor</legend>
 
-                <select name="vendedor">
+                <select name="vendedorId">
                     <option value="">-- Seleccione --</option>
                     <?php while ($vendedor = mysqli_fetch_assoc($resultado) ):  ?>
                         <option <?php echo $vendedorId === $vendedor['id'] ? 'selected' : ''; ?>  value="<?php echo $vendedor['id']; ?>"> <?php echo $vendedor['nombre'] . " " . $vendedor['apellido']; ?></option>
