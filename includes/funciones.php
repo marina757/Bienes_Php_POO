@@ -6,6 +6,8 @@ define('TEMPLATES_URL', __DIR__ . '/templates'); //__DIR__ es una superglobal pa
                                                  // donde buscar los archivos
 define('FUNCIONES_URL', __DIR__ . 'funciones.php');
 
+define('CARPETA_IMAGENES', __DIR__ . '/../imagenes/');
+
 
 function incluirTemplate( string $nombre, bool $inicio = false ) {
     include TEMPLATES_URL . "/${nombre}.php";     

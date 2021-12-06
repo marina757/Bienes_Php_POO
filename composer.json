@@ -13,5 +13,7 @@
             "email": "marinamarrina@hotmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "intervention/image": "^2.7"
+    }
 }
