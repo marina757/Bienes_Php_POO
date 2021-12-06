@@ -1,20 +1,13 @@
 <?php
-    require '../includes/funciones.php'; //sirve para funciones  
-    $auth = estaAutenticado();
+    require '../includes/app.php';  
+    estaAutenticado();
 
-    if(!$auth) {
-        header('Location: /');
-    }
+    use App\Propiedad;
 
-    //IMPORTAR LA CONEXION
-    require '../includes/config/database.php';
-    $db = conectarDB(); 
+    //IMPLEMENTAR UN METODO PARA OBTENER TODAS LAS PROPIEDADES
+    $propiedades = Propiedad::all();
 
-    //ESCRIBIR QUERY
-    $query = "SELECT * FROM propiedades";
 
-    //CONSULTAR DB
-    $resultadoConsulta = mysqli_query( $db, $query);
 
     //MUESTRA MENSAJE CONDICIONAL
     $resultado = $_GET['resultado'] ?? null; //superglobal $_GET para valores que estan en url
