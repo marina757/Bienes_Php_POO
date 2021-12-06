@@ -1,15 +1,10 @@
 <?php
 
-    require '../../includes/funciones.php'; //sirve para funciones 
-    $auth = estaAutenticado();
+use App\Propiedad;
 
-    if(!$auth) {
-        header('Location: /');
-    }
-
-    // echo "<pre>";
-    // var_dump($_GET);
-    // echo "</pre>";
+require '../../includes/app.php';
+    
+    estaAutenticado();
 
     //VALIDAR URL POR ID VALIDO
     $id = $_GET['id'];
@@ -20,17 +15,10 @@
         header('Location: /admin');
     }
 
-    //BASE DE DATOS
-    require '../../includes/config/database.php';
-    $db = conectarDB();
+    //OBTENER DATOS DE LA PROPIEDAD
+    $propiedad = Propiedad::find($id);
 
-    //OBTENER DATOS DE PROPIEDAD
-    $consulta = "SELECT * FROM propiedades WHERE id = ${id}";
-    // echo $consulta;
-    $resultado = mysqli_query($db, $consulta);
-    $propiedad = mysqli_fetch_assoc($resultado);
 
-    
     //CONSULTAR PARA OBTENER LOS VENDEDORES
     $consulta = "SELECT * FROM vendedores";
     $resultado = mysqli_query($db, $consulta);
@@ -49,15 +37,8 @@
     //ARREGLO CON MENSAJES DE ERRORES
     $errores = [];
 
-    $titulo = $propiedad['titulo'];
-    $precio = $propiedad['precio'];
-    $descripcion = $propiedad['descripcion'];
-    $habitaciones = $propiedad['habitaciones'];
-    $wc = $propiedad['wc'];
-    $estacionamiento = $propiedad['estacionamiento'];
-    $vendedorId = $propiedad['vendedorId'];
-    $imagenPropiedad = $propiedad['imagen'];
-    // $creado = date('Y/m/d');
+    $titulo = $propiedad->titulo;
+    
 
     //EJECUTA CODIGO DESPUES DE QUE USUARIO ENVIA FORMULARIO
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -190,54 +171,8 @@
         <?php endforeach; ?>
 
         <form class="formulario" method="POST" enctype="multipart/form-data">
-            <fieldset>
-                <legend>Informacion General</legend>
-
-                <label for="titulo">Titulo:</label>
-                <input type="text" id="titulo" name="titulo" placeholder="Titulo Propiedad" value="<?php echo $titulo; ?>">
-
-                <label for="precio">Precio:</label>
-                <input type="number" id="precio" name="precio" placeholder="Precio Propiedad" value="<?php echo $precio; ?>">
-
-                <label for="imagen">Imagen:</label>
-                <input type="file" id="imagen" accept="image/jpeg, image/png" name="imagen">
-
-                <img src="/imagenes/<?php echo $imagenPropiedad; ?>" class="imagen-small">
-
-                <label for="descripcion">Descripcion:</label> 
-                <textarea id="descripcion" name="descripcion"><?php echo $descripcion; ?></textarea>
-            </fieldset>
-
-            <fieldset>
-                <legend>Informacion Propiedad</legend>
-
-                <label for="habitaciones">Habitaciones:</label>
-                <input type="number" id="habitaciones" name="habitaciones" placeholder="Ej: 3" min="1" max="9" value="<?php echo $habitaciones; ?>">
-
-                <label for="wc">Banos:</label>
-                <input type="number" id="wc" name="wc" placeholder="Ej: 3" min="1" max="9" value="<?php echo $wc; ?>">
-
-                <label for="estacionamiento">Estacionamiento:</label>
-                <input type="number" id="estacionamiento" name="estacionamiento" placeholder="Ej: 3" min="1" max="9" value="<?php echo $estacionamiento; ?>">
-            </fieldset>
-
-            <fieldset>
-                <legend>Vendedor</legend>
-
-                <select name="vendedor">
-                    <option value="">-- Seleccione --</option>
-                    <?php while ($vendedor = mysqli_fetch_assoc($resultado) ):  ?>
-                        <option <?php echo $vendedorId === $vendedor['id'] ? 'selected' : ''; ?>  value="<?php echo $vendedor['id']; ?>"> <?php echo $vendedor['nombre'] . " " . $vendedor['apellido']; ?></option>
-                    <?php endwhile; ?>
-                    
-                    
-                    <!-- EJEMPLO PARA POCOS VENDEDORES
-                    <option value="1">Marina</option>
-                    <option value="2">Karen</option>
-                     -->
-                </select>
-            </fieldset>
-
+            <?php include '../../includes/templates/formulario_propiedades.php'; ?>    
+        
             <input type="submit" value="Actualizar Propiedad" class="boton boton-verde">
 
         </form>
