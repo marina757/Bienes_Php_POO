@@ -25,7 +25,9 @@
     // echo "</pre>";
 
     //ARREGLO CON MENSAJES DE ERRORES
-    $errores = [];
+    $errores = Propiedad::getErrores();
+
+    // debuguear($errores);
 
     $titulo = '';
     $precio = '';
@@ -40,80 +42,20 @@
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $propiedad = new Propiedad($_POST);
-        
-        $propiedad->guardar();
 
-
-        //  echo "<pre>";
-        //  var_dump($_POST); //nos trae inf cuando mandamos peticion post en form
-        //  echo "</pre>";
-
-        //  echo "<pre>";
-        //  var_dump($_FILES); //permite ver contenido de archivos
-        //  echo "</pre>";
-
-        //  exit;
-
-        $titulo = mysqli_real_escape_string( $db, $_POST['titulo']);
-        $precio = mysqli_real_escape_string( $db, $_POST['precio']);
-        $descripcion = mysqli_real_escape_string( $db, $_POST['descripcion']);
-        $habitaciones = mysqli_real_escape_string( $db, $_POST['habitaciones']);
-        $wc = mysqli_real_escape_string( $db, $_POST['wc']);
-        $estacionamiento = mysqli_real_escape_string( $db, $_POST['estacionamiento']);
-        $vendedorId = mysqli_real_escape_string( $db, $_POST['vendedorId']);
-        $creado = date('Y/m/d');
-
-        //ASIGNAR FILES HACIA UNA VARIABLE
-        $imagen = $_FILES['imagen'];
-        
-
-        if (!$titulo) {
-            $errores[] = "Debes poner un titulo";
-        }
-
-        if (!$precio) {
-            $errores[] = "El precio es obligatorio";
-        }
-
-        if ( strlen( $descripcion ) < 50 ) {
-            $errores[] = "La descripcion es obligatoria y debe tener al menos 50 caracteres";
-        }
-
-        if (!$habitaciones) {
-            $errores[] = "El numero de habitaciones es obligatorio";
-        }
-
-        if (!$wc) {
-            $errores[] = "El numero de wc es obligatorio";
-        }
-
-        if (!$estacionamiento) {
-            $errores[] = "El numero de lugares de estableciemiento es obligatorio";
-        }
-
-        if (!$vendedorId) {
-            $errores[] = "Elige un vendedor";
-        }
-
-        if (!$imagen['name'] || $imagen['error']) {
-            $errores[] = "la imagen es obligatoria";
-        }
-
-        //VALIDAR POR TAMANO 1mb MAXIMO
-        $medida = 1000 * 1000; //lo convierte de bytes a kb
-
-        if ($imagen['size'] > $medida) {
-            $errores[] = "La imagen es muy pesada";
-        }
-
-        // echo "<pre>";
-        // var_dump($errores);
-        // echo "</pre>";
-        
-        // exit;
+        $errores = $propiedad->validar();
+  
 
         //REVISAR QUE ARRAY DE ERRORES ESTE VACIO
         if (empty($errores)) {
+            $propiedad->guardar();
+
+            //ASIGNAR FILES HACIA UNA VARIABLE
+            $imagen = $_FILES['imagen'];
+            
+            // echo "<pre>";
+            // var_dump($errores);
+            // echo "</pre>";
             //SUBIDA DE ARCHIVOS
 
             //CREAR CARPETA
