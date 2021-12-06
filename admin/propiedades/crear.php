@@ -25,19 +25,19 @@
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         //CREA UNA NUEVA INSTANCIA
-        $propiedad = new Propiedad($_POST);
+        $propiedad = new Propiedad($_POST['propiedad']);
+
+        // debuguear($_FILES['propiedad']);
 
         ////SUBIDA DE ARCHIVOS////
-        //CREAR CARPETA
-        
-
+       
         //GENERAR UN NOMBRE UNICO
         $nombreImagen = md5( uniqid( rand(), true ) ). ".jpg";
 
         //SETEAR LA IMAGEN
         //REALIZA UN RESIZE A LA IMAGEN CON INTERVENTION
-        if ($_FILES['imagen']['tmp_name']) {
-            $image = Image::make($_FILES['imagen']['tmp_name'])->fit(800,600);
+        if($_FILES['propiedad']['tmp_name']['imagen']) {
+            $image = Image::make($_FILES['propiedad']['tmp_name']['imagen'])->fit(800,600);
             $propiedad->setImagen($nombreImagen);
         }
         
