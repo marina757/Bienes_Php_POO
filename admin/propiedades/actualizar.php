@@ -35,7 +35,7 @@ require '../../includes/app.php';
     // echo "</pre>";
 
     //ARREGLO CON MENSAJES DE ERRORES
-    $errores = [];
+    $errores = Propiedad::getErrores();
 
     $titulo = $propiedad->titulo;
     
@@ -47,54 +47,10 @@ require '../../includes/app.php';
         $args = $_POST['propiedad'];
 
         $propiedad->sincronizar($args);
-        debuguear($propiedad);
+       
          
-        //ASIGNAR FILES HACIA UNA VARIABLE
-        $imagen = $_FILES['imagen'];
+        $errores = $propiedad->validar();
         
-
-        if (!$titulo) {
-            $errores[] = "Debes poner un titulo";
-        }
-
-        if (!$precio) {
-            $errores[] = "El precio es obligatorio";
-        }
-
-        if ( strlen( $descripcion ) < 50 ) {
-            $errores[] = "La descripcion es obligatoria y debe tener al menos 50 caracteres";
-        }
-
-        if (!$habitaciones) {
-            $errores[] = "El numero de habitaciones es obligatorio";
-        }
-
-        if (!$wc) {
-            $errores[] = "El numero de wc es obligatorio";
-        }
-
-        if (!$estacionamiento) {
-            $errores[] = "El numero de lugares de estableciemiento es obligatorio";
-        }
-
-        if (!$vendedorId) {
-            $errores[] = "Elige un vendedor";
-        }
-
-
-        //VALIDAR POR TAMANO 1mb MAXIMO
-        $medida = 1000 * 1000; //lo convierte de bytes a kb
-
-        if ($imagen['size'] > $medida) {
-            $errores[] = "La imagen es muy pesada";
-        }
-
-        // echo "<pre>";
-        // var_dump($errores);
-        // echo "</pre>";
-        
-        // exit;
-
         //REVISAR QUE ARRAY DE ERRORES ESTE VACIO
         if (empty($errores)) {
 
