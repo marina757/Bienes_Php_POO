@@ -1,6 +1,7 @@
 <?php
 
 use App\Propiedad;
+use Intervention\Image\ImageManagerStatic as Image;
 
 require '../../includes/app.php';
     
@@ -48,56 +49,25 @@ require '../../includes/app.php';
 
         $propiedad->sincronizar($args);
        
-         
+        //VALIDACION 
         $errores = $propiedad->validar();
+
+        //SUBIDA DE ARCHIVOS
+        //GENERAR UN NOMBRE UNICO
+        $nombreImagen = md5( uniqid( rand(), true ) ). ".jpg";
+
+        if($_FILES['propiedad']['tmp_name']['imagen']) {
+            $image = Image::make($_FILES['propiedad']['tmp_name']['imagen'])->fit(800,600);
+            $propiedad->setImagen($nombreImagen);
+        }
         
         //REVISAR QUE ARRAY DE ERRORES ESTE VACIO
         if (empty($errores)) {
-
-              // //CREAR CARPETA
-              $carpetaImagenes = '../../imagenes/';
-
-              if (!is_dir($carpetaImagenes)) { //is_dir nos retorna si carpeta existe o no existe   
-                  mkdir($carpetaImagenes);
-              }
-
-              $nombreImagen = '';
-
-            ////////SUBIDA DE ARCHIVOS/////
-            if ($imagen['name']) {
-             //ELIMINAR LA IMAGEN PREVIA
-             unlink($carpetaImagenes . $propiedad['imagen']);
-
-              // //GENERAR UN NOMBRE UNICO
-            $nombreImagen = md5( uniqid( rand(), true ) ). ".jpg";
-
-              // //SUBIR IMAGEN
-             move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen );
-              // // exit;
-            } else {
-                $nombreImagen = $propiedad['imagen'];
-            }
-
-           
-            //INSERTAR EN BASE DE DATOS
-            $query = " UPDATE propiedades SET titulo = '${titulo}', precio = '${precio}', imagen = '${nombreImagen}', descripcion = '${descripcion}',
-            habitaciones = ${habitaciones}, wc = ${wc}, estacionamiento = ${estacionamiento}, vendedorId = ${vendedorId} WHERE 
-            id = ${id} ";
-
-            // echo $query;
-             
-            $resultado = mysqli_query($db, $query);
-
-            if ($resultado) {
-                //REDIRECCIONAR AL USUARIO
-
-                header('Location: /admin?resultado=2'); //header sirve pare redireccionar a un usuario,
-                                            // para enviar datos por enmedio del encabezado 
-                                            //de un stio web, de la peticion
-            }    
+            //Almacenar imagen
+           $image->save(CARPETA_IMAGENES . $nombreImagen);
+           $propiedad->guardar();
         }
     }
-
        
     incluirTemplate('header'); 
 ?>

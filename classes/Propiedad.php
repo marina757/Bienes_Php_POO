@@ -42,7 +42,19 @@ class Propiedad {
         $this->vendedorId = $args['vendedorId'] ?? 1;
     }
 
+
     public function guardar() {
+        if (isset($this->id)) {
+            //actualizar
+            $this->actualizar();
+        }else{
+            //creando nuevo registro
+            $this->crear();
+        }
+
+    }
+
+    public function crear() {
 
         //SANITIZAR DATOS
         $atributos = $this->sanitizarAtributos();
@@ -56,6 +68,30 @@ class Propiedad {
 
         $resultado = self::$db->query($query);
         return $resultado;
+    }
+
+    public function actualizar() {
+         //SANITIZAR DATOS
+         $atributos = $this->sanitizarAtributos();
+
+         $valores = [];
+         foreach ($atributos as $key => $value) {
+            $valores[] = "{$key}='{$value}'";
+         }
+
+         $query = " UPDATE propiedades SET ";
+         $query .= join(', ', $valores );
+         $query .= " WHERE id = '" . self::$db->escape_string($this->id) . "' ";
+         $query .= "LIMIT 1 ";
+
+        //  debuguear($query);
+
+        $resultado = self::$db->query($query);
+         if($resultado) {
+            //REDIRECCIONAR AL USUARIO
+            header('Location: /admin?resultado=2'); 
+        } 
+
     }
 
     //IDENTIFICAR Y UNIR LOS ATRIBUTOS DE LA BD
@@ -81,6 +117,18 @@ class Propiedad {
     }
     //SUBIDA DE ARCHIVOS
     public function setImagen($imagen) {
+        //ELIMINA LA IMAGEN PREVIA
+        if(isset($this->id)) {
+            //COMPROBAR SI EXISTE ARCHIVO
+            $existeArchivo = file_exists(CARPETA_IMAGENES . $this->imagen);
+            if ($existeArchivo) {
+                unlink(CARPETA_IMAGENES . $this->imagen);
+            }
+            //debuguear($existeArchivo);
+        }
+
+
+
         //ASIGNAR AL ATRIBUTO DE IMAGEN EL NOMBRE DE LA IMAGEN
         if ($imagen) {
             $this->imagen = $imagen;
