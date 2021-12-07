@@ -57,16 +57,8 @@
             $image->save(CARPETA_IMAGENES . $nombreImagen);
 
             //GUARDA EN LA BASE DE DATOS
-            $resultado = $propiedad->guardar();
-            
-            //MENSAJE DE EXITO
-            if ($resultado) {
-                //REDIRECCIONAR AL USUARIO
-
-                header('Location: /admin?resultado=1'); //header sirve pare redireccionar a un usuario,
-                                            // para enviar datos por enmedio del encabezado 
-                                            //de un stio web, de la peticion
-            }    
+            $propiedad->guardar();
+              
         }
     }
 
