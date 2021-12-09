@@ -3,10 +3,11 @@
     estaAutenticado();
 
     use App\Propiedad;
+    use App\Vendedor;
 
     //IMPLEMENTAR UN METODO PARA OBTENER TODAS LAS PROPIEDADES
     $propiedades = Propiedad::all();
-
+    $vendedores = Vendedor::all();
 
 
     //MUESTRA MENSAJE CONDICIONAL
