@@ -86,7 +86,7 @@ class ActiveRecord {
     //IDENTIFICAR Y UNIR LOS ATRIBUTOS DE LA BD
     public function atributos() {
         $atributos = [];
-        foreach(self::$columnasDB as $columna) {
+        foreach(static::$columnasDB as $columna) {
             if($columna === 'id') continue;
             $atributos[$columna] = $this->$columna;
         }
@@ -164,7 +164,7 @@ class ActiveRecord {
         //ITERAR RESULTADOS
         $array = [];
         while ($registro = $resultado->fetch_assoc()) {
-            $array[] = self::crearObjeto($registro);
+            $array[] = static::crearObjeto($registro);
         }
 
         //LIBERAR LA MEMORIA
