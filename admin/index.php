@@ -9,7 +9,6 @@
     $propiedades = Propiedad::all();
     $vendedores = Vendedor::all();
 
-
     //MUESTRA MENSAJE CONDICIONAL
     $resultado = $_GET['resultado'] ?? null; //superglobal $_GET para valores que estan en url
     // var_dump($resultado);

@@ -5,46 +5,19 @@ namespace App;
 class ActiveRecord {
     //BASE DE DATOS
     protected static $db;
-    protected static $columnasDB = ['id', 'titulo', 'precio', 'imagen', 'descripcion',
-     'habitaciones', 'wc', 'estacionamiento', 'creado', 'vendedorId'];
-
-     protected static $tabla = '';
+    protected static $columnasDB = [];
+    protected static $tabla = '';
 
      // ERRORES
      protected static $errores = [];
 
-     //FORMA ANTERIOR A PHP8   
-    public $id;
-    public $titulo;
-    public $precio;
-    public $imagen;
-    public $descripcion;
-    public $habitaciones;
-    public $wc;
-    public $estacionamiento;
-    public $creado;
-    public $vendedorId;
-
+    
     //DEFINIR LA CONEXION A LA BASE DE DATOS
      public static function setDB($database) {
         self::$db = $database;
     }
 
-    public function __construct($args = [])
-    {
-        $this->id = $args['id'] ?? null;
-        $this->titulo = $args['titulo'] ?? '';
-        $this->precio = $args['precio'] ?? '';
-        $this->imagen = $args['imagen'] ?? '';
-        $this->descripcion = $args['descripcion'] ?? '';
-        $this->habitaciones = $args['habitaciones'] ?? '';
-        $this->wc = $args['wc'] ?? '';
-        $this->estacionamiento = $args['estacionamiento'] ?? '';
-        $this->creado = date('Y/m/d');
-        $this->vendedorId = $args['vendedorId'] ?? 1;
-    }
-
-
+    
     public function guardar() {
         if (!is_null($this->id)) {
             //actualizar
@@ -235,7 +208,7 @@ class ActiveRecord {
     }
 
     protected static function crearObjeto($registro) {
-        $objeto = new self;
+        $objeto = new static();
 
         foreach ($registro as $key => $value) {
             if( property_exists( $objeto, $key)) {
