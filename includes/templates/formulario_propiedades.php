@@ -2,13 +2,16 @@
     <legend>Informacion General</legend>
 
     <label for="titulo">Titulo:</label>
-    <input type="text" id="titulo" name="propiedad[titulo]" placeholder="Titulo Propiedad" value="<?php echo s( $propiedad->titulo); ?>">
+    <input type="text" id="titulo" name="propiedad[titulo]" 
+    placeholder="Titulo Propiedad" value="<?php echo s( $propiedad->titulo); ?>">
 
     <label for="precio">Precio:</label>
-    <input type="number" id="precio" name="propiedad[precio]" placeholder="Precio Propiedad" value="<?php echo s($propiedad->precio); ?>">
+    <input type="number" id="precio" name="propiedad[precio]" 
+    placeholder="Precio Propiedad" value="<?php echo s($propiedad->precio); ?>">
 
     <label for="imagen">Imagen:</label>
-    <input type="file" id="imagen" accept="image/jpeg, image/png" name="propiedad[imagen]">
+    <input type="file" id="imagen" accept="image/jpeg, image/png" 
+    name="propiedad[imagen]">
 
     <?php if($propiedad->imagen): ?>
         <img src="/imagenes/<?php echo $propiedad->imagen ?>" class="imagen-small">
