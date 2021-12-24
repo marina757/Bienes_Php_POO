@@ -2,6 +2,7 @@
     require '../includes/app.php';  
     estaAutenticado();
 
+    //Importar las clases
     use App\Propiedad;
     use App\Vendedor;
 
@@ -15,6 +16,7 @@
     $resultado = $_GET['resultado'] ?? null; //superglobal $_GET para valores que estan en url
     // var_dump($resultado);
 
+    //Validar id
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         $id = $_POST['id'];
@@ -25,7 +27,6 @@
             $tipo = $_POST['tipo'];
             
             if(validarTipoContenido($tipo)) {
-                
                 //Compara lo que vamos a eliminar
                 if ($tipo === 'vendedor') {
                     $vendedor = Vendedor::find($id);
@@ -45,13 +46,13 @@
 
     <main class="contenedor seccion">
         <h1>Administrador de Bienes</h1>
-        <?php if( intval( $resultado ) === 1): ?>
-            <p class="alerta exito">Creado Correctamente</p>
-        <?php elseif( intval( $resultado ) === 2): ?>
-            <p class="alerta exito">Actualizado Correctamente</p>
-        <?php elseif( intval( $resultado ) === 3): ?>
-            <p class="alerta exito">Eliminado Correctamente</p>
-        <?php endif; ?>
+
+    <?php
+        $mensaje = mostrarNotificacion( intval($resultado) );
+        if ($mensaje) { ?>
+            <p class="alerta exito"><?php echo s($mensaje) ?></p>
+    <?php  } ?>
+  
 
         <a href="/admin/propiedades/crear.php" class="boton boton-verde">Nueva Propiedad</a>
         
